@@ -92,10 +92,8 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
             return array('result' => 'failure');
         }
 
-        // Generate a unique transaction/order ID for Malipo (merchant_txn_id)
-        $malipo_txn_id = $order_id . '-' . uniqid();
-        // Save it as order meta for later reference
-        $order->update_meta_data('_malipo_txn_id', $malipo_txn_id);
+         $malipo_txn_id = $order_id . '-' . uniqid();
+         $order->update_meta_data('_malipo_txn_id', $malipo_txn_id);
         $order->save();
 
         $order->update_status('pending', __('Awaiting Malipo payment', 'malipo-woocommerce'));
@@ -108,8 +106,7 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
 
     public function receipt_page($order_id) {
         $order = wc_get_order($order_id);
-        // Retrieve the unique Malipo transaction/order ID
-        $malipo_txn_id = $order->get_meta('_malipo_txn_id');
+         $malipo_txn_id = $order->get_meta('_malipo_txn_id');
         ?>
         <div id="malipo-payment-container">
             <h3>Processing your payment...</h3>
@@ -125,8 +122,7 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
                     order_id: "<?php echo esc_js($malipo_txn_id); ?>",
                     description: "Order #<?php echo esc_js($order_id); ?>",
                     onSuccess: function() {
-                        // Only after successful payment, redirect to the real receipt page
-                        window.location.href = "<?php echo esc_url($order->get_checkout_order_received_url()); ?>";
+                         window.location.href = "<?php echo esc_url($order->get_checkout_order_received_url()); ?>";
                     },
                     onError: function(error) {
                         alert('Payment failed: ' + error);

@@ -76,14 +76,15 @@ const MalipoPaymentMethod = {
     },
     createPayment: async (eventData, { onPaymentProcessing }) => {
         showMalipoSpinner();
-        console.log('Malipo createPayment called', eventData);
+         const uniqueOrderId = eventData.orderId + '-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+        console.log('Malipo createPayment called', eventData, 'Unique order_id:', uniqueOrderId);
         return new Promise((resolve, reject) => {
             if (typeof window.Malipo !== 'undefined') {
                 window.Malipo.open({
-                    merchantAccount: settings.merchant_account,
+                    merchantAccount: "settings.merchant_account12",
                     currency: eventData.currency,
                     amount: eventData.total,
-                    order_id: eventData.orderId,
+                    order_id: uniqueOrderId,
                     description: 'Order #' + eventData.orderId,
                     onSuccess: function(result) {
                         hideMalipoSpinner();
