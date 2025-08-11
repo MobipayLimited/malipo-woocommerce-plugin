@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: Malipo WooCommerce Gateway
- * Plugin URI: https://malipo.mw
- * Description: Accept payments through Malipo's hosted checkout (TNM Mpamba, Airtel Money, Cards). Supports modern WooCommerce blocks.
+ * Plugin Name: Malipo Gateway for WooCommerce
+ * Plugin URI: https://malipo.mw/plugins/malipo-woocommerce
+ * Description: Accept payments through Malipo's hosted checkout (TNM Mpamba, Airtel Money, Bank Cards). Supports modern WooCommerce blocks.
  * Version: 1.0.1
- * Author: Your Name
+ * Author: Malipo
  * Author URI: https://malipo.mw
  * Text Domain: malipo-woocommerce
  * Domain Path: /languages

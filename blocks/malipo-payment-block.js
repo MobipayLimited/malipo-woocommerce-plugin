@@ -5,7 +5,7 @@ const { getSetting } = window.wc.wcSettings;
 
 const settings = getSetting('malipo_data', {});
 
-// Ensure Malipo SDK is loaded for WooCommerce Blocks checkout
+// We ensure the Malipo SDK is loaded for WooCommerce Blocks checkout
 if (typeof window.Malipo === 'undefined') {
     const script = document.createElement('script');
     script.src = 'https://app.malipo.mw/sdk/v1-malipo-hosted-checkout.js';
