@@ -97,28 +97,9 @@ function malipo_plugin_action_links($links) {
     return $links;
 }
 
-add_action('woocommerce_thankyou_malipo', 'malipo_custom_thankyou_page', 10, 1);
-function malipo_custom_thankyou_page($order_id) {
-    $order = wc_get_order($order_id);
-    if (!$order) return;
-    $malipo_txn_id = $order->get_meta('_malipo_txn_id');
-    $logo_url = plugin_dir_url(__FILE__) . 'assets/images/malipo-logo.png';
-    ?>
-    <div class="malipo-thankyou" style="max-width:600px;margin:40px auto;padding:32px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);text-align:center;">
-        <img src="<?php echo esc_url($logo_url); ?>" alt="Malipo" style="height:60px;margin-bottom:24px;">
-        <h2 style="color:#1d4ed8;">Thank you for your payment!</h2>
-        <p style="font-size:18px;margin:16px 0;">Your payment was processed successfully via <strong>Malipo</strong>.</p>
-        <div style="margin:32px 0 16px 0;">
-            <strong>Order Number:</strong> <span style="font-size:20px;color:#222;letter-spacing:1px;"> <?php echo esc_html($malipo_txn_id ? $malipo_txn_id : $order->get_order_number()); ?> </span><br>
-            <strong>Date:</strong> <?php echo esc_html(wc_format_datetime($order->get_date_created())); ?><br>
-            <strong>Total:</strong> <?php echo wp_kses_post($order->get_formatted_order_total()); ?><br>
-            <strong>Payment Method:</strong> Mobile Money & Cards
-        </div>
-        <div style="margin-top:32px;">
-            <a href="<?php echo esc_url(home_url()); ?>" style="background:#1d4ed8;color:#fff;padding:12px 32px;border-radius:6px;text-decoration:none;font-weight:600;">Return to Home</a>
-        </div>
-    </div>
-    <?php
+// Helper to get the public IPN endpoint for Malipo (for merchant dashboard)
+function malipo_get_public_ipn_url() {
+    return home_url('/wp-json/malipo/v1/ipn');
 }
 
 // Admin page for Malipo transactions
@@ -144,17 +125,25 @@ function malipo_transactions_admin_page() {
     );
     $orders = wc_get_orders($args);
     $total = 0;
-    echo '<table class="widefat fixed striped"><thead><tr><th>Order #</th><th>Malipo Txn ID</th><th>Status</th><th>Total</th><th>Date</th></tr></thead><tbody>';
+    echo '<table class="widefat fixed striped"><thead><tr><th>Order #</th><th>Txn ID</th><th>Status</th><th>Total</th><th>Product(s)</th><th>Qty</th><th>Date</th></tr></thead><tbody>';
     foreach ($orders as $order) {
         $malipo_txn_id = $order->get_meta('_malipo_txn_id');
         $status = wc_get_order_status_name($order->get_status());
         $amount = $order->get_total();
         $total += ($order->get_status() === 'processing' || $order->get_status() === 'completed') ? $amount : 0;
+        $products = array();
+        $qty = 0;
+        foreach ($order->get_items() as $item) {
+            $products[] = $item->get_name();
+            $qty += $item->get_quantity();
+        }
         echo '<tr>';
         echo '<td><a href="' . esc_url(get_edit_post_link($order->get_id())) . '">' . esc_html($order->get_id()) . '</a></td>';
         echo '<td>' . esc_html($malipo_txn_id) . '</td>';
         echo '<td>' . esc_html($status) . '</td>';
         echo '<td>' . wc_price($amount) . '</td>';
+        echo '<td>' . esc_html(implode(', ', $products)) . '</td>';
+        echo '<td>' . esc_html($qty) . '</td>';
         echo '<td>' . esc_html(wc_format_datetime($order->get_date_created())) . '</td>';
         echo '</tr>';
     }

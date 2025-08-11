@@ -64,6 +64,14 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
                 'description' => 'Your Malipo Merchant Account ID from your dashboard',
                 'default'     => '',
                 'desc_tip'    => true,
+            ),
+            'malipo_ipn_display' => array(
+                'title'       => __('Your Malipo IPN Endpoint', 'malipo-woocommerce'),
+                'type'        => 'text',
+                'default'     => home_url('/wp-json/malipo/v1/ipn'),
+                'custom_attributes' => array('readonly' => 'readonly', 'onclick' => 'this.select()'),
+                'description' => __('Copy this URL and add it to your Malipo/MobiPay dashboard as the callback endpoint for payment notifications.', 'malipo-woocommerce'),
+                'desc_tip'    => true,
             )
         );
     }
