@@ -1,0 +1,127 @@
+/* Modern, clean styling for both classic and block checkout */
+.payment_method_malipo {
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.payment_method_malipo .payment_box {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 8px;
+}
+
+/* Payment method icon styling */
+.payment_method_malipo img {
+    max-height: 32px;
+    width: auto;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Payment container modern styling */
+#malipo-payment-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    text-align: center;
+    max-width: 500px;
+    margin: 24px auto;
+}
+
+#malipo-payment-container h3 {
+    color: #1f2937;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+#malipo-payment-container p {
+    color: #6b7280;
+    font-size: 16px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* Modern button styling */
+#malipo-pay-button {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    min-width: 160px;
+}
+
+#malipo-pay-button:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+}
+
+#malipo-pay-button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#malipo-loading {
+    margin-top: 16px;
+    font-style: italic;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Loading spinner */
+#malipo-loading::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Block checkout specific styles */
+.wc-block-checkout .payment_method_malipo {
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+.wc-block-checkout .payment_method_malipo .wc-block-components-radio-control__description {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #malipo-payment-container {
+        margin: 16px;
+        padding: 24px 16px;
+    }
+    
+    #malipo-pay-button {
+        width: 100%;
+        padding: 16px;
+    }
+}
