@@ -151,3 +151,50 @@ function malipo_transactions_admin_page() {
     echo '<h3 style="margin-top:32px;">Total Completed/Processing: ' . wc_price($total) . '</h3>';
     echo '</div>';
 }
+
+ add_action('rest_api_init', function () {
+    register_rest_route('malipo/v1', '/ipn', array(
+        'methods'  => 'POST',
+        'callback' => 'malipo_ipn_callback',
+        'permission_callback' => '__return_true',  
+    ));
+});
+
+function malipo_ipn_callback($request) {
+    $params = $request->get_json_params();
+    $merchant_txn_id = isset($params['merchant_txn_id']) ? sanitize_text_field($params['merchant_txn_id']) : '';
+    $status = isset($params['status']) ? sanitize_text_field($params['status']) : '';
+    $transaction_id = isset($params['transaction_id']) ? sanitize_text_field($params['transaction_id']) : '';
+    $customer_ref = isset($params['customer_ref']) ? sanitize_text_field($params['customer_ref']) : '';
+    $amount = isset($params['amount']) ? floatval($params['amount']) : 0;
+
+    if (!$merchant_txn_id) {
+        return new WP_REST_Response(['error' => 'Missing merchant_txn_id'], 400);
+    }
+
+     $orders = wc_get_orders([
+        'meta_key' => '_malipo_txn_id',
+        'meta_value' => $merchant_txn_id,
+        'limit' => 1
+    ]);
+    if (empty($orders)) {
+        return new WP_REST_Response(['error' => 'Order not found'], 404);
+    }
+    $order = $orders[0];
+
+     if ($status === 'Completed') {
+        $order->payment_complete($transaction_id);
+        $order->add_order_note('Malipo payment completed via IPN. Customer Ref: ' . $customer_ref);
+    } elseif ($status === 'Failed') {
+        $order->update_status('failed', 'Malipo payment failed via IPN. Customer Ref: ' . $customer_ref);
+    } else {
+        $order->add_order_note('Malipo IPN received with unknown status: ' . $status);
+    }
+
+     $order->update_meta_data('_malipo_transaction_id', $transaction_id);
+    $order->update_meta_data('_malipo_customer_ref', $customer_ref);
+    $order->update_meta_data('_malipo_ipn_amount', $amount);
+    $order->save();
+
+    return new WP_REST_Response(['success' => true], 200);
+}
