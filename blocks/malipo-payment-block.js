@@ -43,22 +43,33 @@ function hideMalipoSpinner() {
     if (spinner) spinner.style.display = 'none';
 }
 
+const logoBase = settings.logo_base_url || '/wp-content/plugins/malipo-woocommerce/assets/images/';
+const logos = [
+    'mpamba.png',
+    'airtel.png',
+    'mastercard.png',
+    'visa.png'
+];
+
 const MalipoPaymentMethod = {
     name: 'malipo',
     label: createElement('div', {
-        style: { display: 'flex', alignItems: 'center' }
+        style: { display: 'flex', alignItems: 'center', gap: '8px' }
     }, [
-        settings.logo_url ? createElement('img', {
-            key: 'logo',
-            src: settings.logo_url,
+        createElement('img', {
+            key: 'malipo-logo',
+            src: logoBase + 'malipo-logo.png',
             alt: 'Malipo',
-            style: {
-                marginRight: '8px',
-                height: '24px',
-                width: 'auto'
-            }
-        }) : null,
-        settings.title || __('Mobile Money and Cards', 'malipo-woocommerce')
+            style: { height: '28px', width: 'auto', display: 'inline-block', marginRight: '8px' }
+        }),
+        ...logos.map((logo) =>
+            createElement('img', {
+                key: logo,
+                src: logoBase + logo,
+                alt: logo.replace('.png', ''),
+                style: { height: '24px', width: 'auto', display: 'inline-block' }
+            })
+        )
     ]),
     content: createElement('div', {
         style: {
@@ -70,7 +81,7 @@ const MalipoPaymentMethod = {
     }, settings.description || __('Pay securely using TNM Mpamba, Airtel Money, or your card.', 'malipo-woocommerce')),
     edit: createElement('div', {}, settings.description),
     canMakePayment: () => true,
-    ariaLabel: settings.title || __('Mobile Money and Cards', 'malipo-woocommerce'),
+    ariaLabel: __('Malipo payment methods', 'malipo-woocommerce'),
     supports: {
         features: settings.supports || ['products']
     },

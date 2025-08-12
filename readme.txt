@@ -50,7 +50,7 @@ Malipo Gateway for WooCommerce is a simple and secure payment gateway for WooCom
 
 == IPN/Callback URL ==
 
-* Your IPN endpoint is displayed in the Malipo settings. Copy this URL and add it to your Malipo/MobiPay dashboard to receive payment status updates.
+* Your IPN endpoint is displayed in the Malipo settings. Copy this URL and add it to your Malipo dashboard to receive payment status updates.
 * Example: `https://yourdomain.com/wp-json/malipo/v1/ipn`
 
 == Frequently Asked Questions ==

@@ -27,7 +27,7 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
         $this->init_form_fields();
         $this->init_settings();
 
-        $this->title            = $this->get_option('title');
+        $this->title            = '';
         $this->description      = $this->get_option('description');
         $this->enabled          = $this->get_option('enabled');
         $this->merchant_account = $this->get_option('merchant_account');
@@ -144,5 +144,21 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
         });
         </script>
         <?php
+    }
+
+    public function payment_fields() {
+        echo '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
+        foreach ([
+            'mpamba.png',
+            'airtel.png',
+            'mastercard.png',
+            'visa.png'
+        ] as $logo) {
+            echo '<img src="' . esc_url(plugin_dir_url(__FILE__) . '../assets/images/' . $logo) . '" alt="' . esc_attr(str_replace('.png','',$logo)) . '" style="height:24px;width:auto;display:inline-block;" />';
+        }
+        echo '</div>';
+        if ($this->description) {
+            echo '<p>' . esc_html($this->description) . '</p>';
+        }
     }
 }
