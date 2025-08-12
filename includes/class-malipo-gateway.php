@@ -49,7 +49,7 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
                 'title'       => 'Title',
                 'type'        => 'text',
                 'description' => 'Payment method title that customers see',
-                'default'     => 'Mobile Money & Cards',
+                'default'     => 'Mobile Money and Cards',
                 'desc_tip'    => true,
             ),
             'description' => array(

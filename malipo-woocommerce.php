@@ -6,8 +6,7 @@
  * Version: 1.0.1
  * Author: Malipo
  * Author URI: https://malipo.mw
- * Text Domain: malipo-woocommerce
- * Domain Path: /languages
+ * Text Domain: malipo-gateway-for-woocommerce
  * Requires at least: 5.8
  * Tested up to: 6.4
  * WC requires at least: 6.0
@@ -70,7 +69,7 @@ function malipo_register_payment_method_type() {
 
         public function get_payment_method_data() {
             return array(
-                'title'            => isset($this->settings['title']) ? $this->settings['title'] : 'Mobile Money & Cards',
+                'title'            => isset($this->settings['title']) ? $this->settings['title'] : 'Mobile Money and Cards',
                 'description'      => isset($this->settings['description']) ? $this->settings['description'] : 'Pay securely using TNM Mpamba, Airtel Money, or your card.',
                 'supports'         => $this->get_supported_features(),
                 'logo_url'         => plugin_dir_url(__FILE__) . 'assets/images/malipo-icon.svg',
@@ -182,7 +181,7 @@ function malipo_ipn_callback($request) {
     }
     $order = $orders[0];
 
-     if ($status === 'Completed') {
+    if ($status === 'Completed') {
         $order->payment_complete($transaction_id);
         $order->add_order_note('Malipo payment completed via IPN. Customer Ref: ' . $customer_ref);
     } elseif ($status === 'Failed') {
@@ -191,10 +190,10 @@ function malipo_ipn_callback($request) {
         $order->add_order_note('Malipo IPN received with unknown status: ' . $status);
     }
 
-     $order->update_meta_data('_malipo_transaction_id', $transaction_id);
+    $order->update_meta_data('_malipo_transaction_id', $transaction_id);
     $order->update_meta_data('_malipo_customer_ref', $customer_ref);
     $order->update_meta_data('_malipo_ipn_amount', $amount);
     $order->save();
 
-    return new WP_REST_Response(['success' => true], 200);
+    return new WP_REST_Response(array('success' => true), 200);
 }

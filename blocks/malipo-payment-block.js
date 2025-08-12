@@ -58,7 +58,7 @@ const MalipoPaymentMethod = {
                 width: 'auto'
             }
         }) : null,
-        settings.title || __('Mobile Money & Cards', 'malipo-woocommerce')
+        settings.title || __('Mobile Money and Cards', 'malipo-woocommerce')
     ]),
     content: createElement('div', {
         style: {
@@ -70,7 +70,7 @@ const MalipoPaymentMethod = {
     }, settings.description || __('Pay securely using TNM Mpamba, Airtel Money, or your card.', 'malipo-woocommerce')),
     edit: createElement('div', {}, settings.description),
     canMakePayment: () => true,
-    ariaLabel: settings.title || __('Mobile Money & Cards', 'malipo-woocommerce'),
+    ariaLabel: settings.title || __('Mobile Money and Cards', 'malipo-woocommerce'),
     supports: {
         features: settings.supports || ['products']
     },
