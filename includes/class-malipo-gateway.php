@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_Malipo_Gateway extends WC_Payment_Gateway {
+class MALIGAFO_Gateway extends WC_Payment_Gateway {
 
     public function __construct() {
         $this->id                 = 'malipo';
@@ -66,11 +66,11 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
                 'desc_tip'    => true,
             ),
             'malipo_ipn_display' => array(
-                'title'       => __('Your Malipo IPN Endpoint', 'malipo-woocommerce'),
+                'title'       => __('Your Malipo IPN Endpoint', 'malipo-gateway-for-woocommerce'),
                 'type'        => 'text',
                 'default'     => home_url('/wp-json/malipo/v1/ipn'),
                 'custom_attributes' => array('readonly' => 'readonly', 'onclick' => 'this.select()'),
-                'description' => __('Copy this URL and add it to your Malipo/MobiPay dashboard as the callback endpoint for payment notifications.', 'malipo-woocommerce'),
+                'description' => __('Copy this URL and add it to your Malipo/MobiPay dashboard as the callback endpoint for payment notifications.', 'malipo-gateway-for-woocommerce'),
                 'desc_tip'    => true,
             )
         );
@@ -104,7 +104,7 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
          $order->update_meta_data('_malipo_txn_id', $malipo_txn_id);
         $order->save();
 
-        $order->update_status('pending', __('Awaiting Malipo payment', 'malipo-woocommerce'));
+        $order->update_status('pending', __('Awaiting Malipo payment', 'malipo-gateway-for-woocommerce'));
 
         return array(
             'result'   => 'success',

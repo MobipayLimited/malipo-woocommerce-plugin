@@ -12,6 +12,7 @@
  * WC requires at least: 6.0
  * WC tested up to: 8.5
  * Requires PHP: 7.4
+ * Requires Plugins: woocommerce
  * License: GPL v2 or later
  */
 
@@ -25,25 +26,25 @@ add_action('before_woocommerce_init', function () {
     }
 });
 
-add_action('plugins_loaded', 'malipo_init_gateway_class');
+add_action('plugins_loaded', 'MALIGAFO_init_gateway_class');
 
-function malipo_init_gateway_class() {
+function MALIGAFO_init_gateway_class() {
     if (!class_exists('WC_Payment_Gateway')) {
         return;
     }
 
     require_once plugin_dir_path(__FILE__) . 'includes/class-malipo-gateway.php';
 
-    add_filter('woocommerce_payment_gateways', 'malipo_add_gateway_class');
-    add_action('woocommerce_blocks_loaded', 'malipo_register_payment_method_type');
+    add_filter('woocommerce_payment_gateways', 'MALIGAFO_add_gateway_class');
+    add_action('woocommerce_blocks_loaded', 'MALIGAFO_register_payment_method_type');
 }
 
-function malipo_register_payment_method_type() {
+function MALIGAFO_register_payment_method_type() {
     if (!class_exists('Automattic\\WooCommerce\\Blocks\\Payments\\Integrations\\AbstractPaymentMethodType')) {
         return;
     }
 
-    class Malipo_Blocks_Support extends Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType {
+    class MALIGAFO_Blocks_Support extends Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType {
         protected $name = 'malipo';
 
         public function initialize() {
@@ -79,25 +80,25 @@ function malipo_register_payment_method_type() {
     }
 
     add_action('woocommerce_blocks_payment_method_type_registration', function ($payment_method_registry) {
-        $payment_method_registry->register(new Malipo_Blocks_Support());
+        $payment_method_registry->register(new MALIGAFO_Blocks_Support());
     });
 }
 
-function malipo_add_gateway_class($gateways) {
+function MALIGAFO_add_gateway_class($gateways) {
     $gateways[] = 'WC_Malipo_Gateway';
     return $gateways;
 }
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'malipo_plugin_action_links');
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'MALIGAFO_plugin_action_links');
 
-function malipo_plugin_action_links($links) {
+function MALIGAFO_plugin_action_links($links) {
     $settings_link = '<a href="admin.php?page=wc-settings&tab=checkout&section=malipo">Settings</a>';
     array_unshift($links, $settings_link);
     return $links;
 }
 
 // Helper to get the public IPN endpoint for Malipo (for merchant dashboard)
-function malipo_get_public_ipn_url() {
+function MALIGAFO_get_public_ipn_url() {
     return home_url('/wp-json/malipo/v1/ipn');
 }
 
@@ -109,11 +110,11 @@ add_action('admin_menu', function() {
         'Malipo Transactions',
         'manage_woocommerce',
         'malipo-transactions',
-        'malipo_transactions_admin_page'
+        'MALIGAFO_transactions_admin_page'
     );
 });
 
-function malipo_transactions_admin_page() {
+function MALIGAFO_transactions_admin_page() {
     if (!current_user_can('manage_woocommerce')) return;
     echo '<div class="wrap"><h1>Malipo Transactions</h1>';
     $args = array(
@@ -151,17 +152,17 @@ function malipo_transactions_admin_page() {
     echo '</div>';
 }
 
- add_action('rest_api_init', function () {
+add_action('rest_api_init', function () {
     register_rest_route('malipo/v1', '/ipn', array(
         'methods'  => 'POST',
-        'callback' => 'malipo_ipn_callback',
+        'callback' => 'MALIGAFO_ipn_callback',
         'permission_callback' => '__return_true',  
     ));
 });
 
-function malipo_ipn_callback($request) {
+function MALIGAFO_ipn_callback($request) {
     $params = $request->get_json_params();
-    $merchant_txn_id = isset($params['merchant_txn_id']) ? sanitize_text_field($params['merchant_txn_id']) : '';
+    $merchant_txn_id = isset($params['merchant_txn_id']) ? sanitize_text_field($merchant_txn_id) : '';
     $status = isset($params['status']) ? sanitize_text_field($params['status']) : '';
     $transaction_id = isset($params['transaction_id']) ? sanitize_text_field($params['transaction_id']) : '';
     $customer_ref = isset($params['customer_ref']) ? sanitize_text_field($params['customer_ref']) : '';
@@ -171,7 +172,7 @@ function malipo_ipn_callback($request) {
         return new WP_REST_Response(['error' => 'Missing merchant_txn_id'], 400);
     }
 
-     $orders = wc_get_orders([
+    $orders = wc_get_orders([
         'meta_key' => '_malipo_txn_id',
         'meta_value' => $merchant_txn_id,
         'limit' => 1
