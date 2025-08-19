@@ -4,8 +4,8 @@
  * Plugin URI: https://malipo.mw/plugins/malipo-woocommerce
  * Description: Accept payments through Malipo's hosted checkout (TNM Mpamba, Airtel Money, Bank Cards). Supports modern WooCommerce blocks.
  * Version: 1.0.1
- * Author: Malipo
- * Author URI: https://malipo.mw
+ * Author: Mobipay
+ * Author URI: https://mobipay.mw
  * Text Domain: malipo-gateway-for-woocommerce
  * Requires at least: 5.8
  * Tested up to: 6.4
@@ -70,7 +70,7 @@ function malipo_register_payment_method_type() {
         public function get_payment_method_data() {
             return array(
                 'title'            => isset($this->settings['title']) ? $this->settings['title'] : 'Mobile Money and Cards',
-                'description'      => isset($this->settings['description']) ? $this->settings['description'] : 'Pay securely using TNM Mpamba, Airtel Money, or your card.',
+                'description'      => isset($this->settings['description']) ? $this->settings['description'] : 'Pay securely using TNM Mpamba, Airtel Money, or your Bank Card.',
                 'supports'         => $this->get_supported_features(),
                 'logo_url'         => plugin_dir_url(__FILE__) . 'assets/images/malipo-icon.svg',
                 'merchant_account' => isset($this->settings['merchant_account']) ? $this->settings['merchant_account'] : ''

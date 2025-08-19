@@ -54,22 +54,30 @@ const logos = [
 const MalipoPaymentMethod = {
     name: 'malipo',
     label: createElement('div', {
-        style: { display: 'flex', alignItems: 'center', gap: '8px' }
+        style: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '8px',
+            width: '100%'
+        }
     }, [
         createElement('img', {
             key: 'malipo-logo',
             src: logoBase + 'malipo-logo.png',
             alt: 'Malipo',
-            style: { height: '28px', width: 'auto', display: 'inline-block', marginRight: '8px' }
+            style: { height: '28px', width: 'auto', display: 'inline-block' }
         }),
-        ...logos.map((logo) =>
+        createElement('div', {
+            style: { display: 'flex', alignItems: 'center', gap: '8px' }
+        }, logos.map((logo) =>
             createElement('img', {
                 key: logo,
                 src: logoBase + logo,
                 alt: logo.replace('.png', ''),
                 style: { height: '24px', width: 'auto', display: 'inline-block' }
             })
-        )
+        ))
     ]),
     content: createElement('div', {
         style: {
@@ -78,7 +86,7 @@ const MalipoPaymentMethod = {
             borderRadius: '6px',
             marginTop: '8px'
         }
-    }, settings.description || __('Pay securely using TNM Mpamba, Airtel Money, or your card.', 'malipo-woocommerce')),
+    }, settings.description || __('Pay securely using TNM Mpamba, Airtel Money, or your Bank Card.', 'malipo-woocommerce')),
     edit: createElement('div', {}, settings.description),
     canMakePayment: () => true,
     ariaLabel: __('Malipo payment methods', 'malipo-woocommerce'),

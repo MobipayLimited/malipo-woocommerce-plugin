@@ -56,7 +56,7 @@ class WC_Malipo_Gateway extends WC_Payment_Gateway {
                 'title'       => 'Description',
                 'type'        => 'textarea',
                 'description' => 'Payment method description that customers see',
-                'default'     => 'Pay securely using TNM Mpamba, Airtel Money, or your card.',
+                'default'     => 'Pay securely using TNM Mpamba, Airtel Money, or your Bank Card.',
             ),
             'merchant_account' => array(
                 'title'       => 'Merchant Account ID',

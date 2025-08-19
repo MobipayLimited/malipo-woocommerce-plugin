@@ -1,5 +1,5 @@
 === Malipo Gateway for WooCommerce ===
-Contributors: mobipay
+Contributors: MobiPay
 Tags: woocommerce, payment gateway, malipo, mobile money, mpamba
 Requires at least: 5.0
 Tested up to: 6.8
